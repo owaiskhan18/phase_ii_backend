@@ -1,0 +1,21 @@
+[tool.black]
+line-length = 88
+target-version = ['py311']
+
+[tool.ruff]
+line-length = 88
+select = [
+    "E",  # pycodestyle errors
+    "W",  # pycodestyle warnings
+    "F",  # pyflakes
+    "I",  # isort
+    "B",  # bugbear
+    "C4", # comprehensions
+    "N",  # pep8-naming
+    "D",  # pydocstyle
+    "UP", # pyupgrade
+]
+ignore = ["D100", "D104"] # Ignore missing docstrings in modules and packages.
+
+[tool.ruff.pydocstyle]
+convention = "google"
