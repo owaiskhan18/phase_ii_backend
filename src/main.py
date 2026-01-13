@@ -13,6 +13,7 @@ app = FastAPI(title="Todo App API")
 origins = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
+    "https://phase-ii-frontend.vercel.app",
 ]
 
 app.add_middleware(
