@@ -1,4 +1,5 @@
 from typing import List, Optional
+from uuid import UUID # Import UUID
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlmodel import Session, select, SQLModel
 from src.database import get_session
@@ -75,8 +76,13 @@ def update_task(
     session: Session = Depends(get_session),
     current_user: User = Depends(get_current_user)
 ):
+    try:
+        task_uuid = UUID(task_id)
+    except ValueError:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid task ID format")
+    
     task = session.exec(
-        select(Task).where(Task.id == task_id, Task.user_id == current_user.id)
+        select(Task).where(Task.id == task_uuid, Task.user_id == current_user.id)
     ).first()
     if not task:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Task not found")
@@ -106,8 +112,13 @@ def delete_task(
     session: Session = Depends(get_session),
     current_user: User = Depends(get_current_user)
 ):
+    try:
+        task_uuid = UUID(task_id)
+    except ValueError:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid task ID format")
+    
     task = session.exec(
-        select(Task).where(Task.id == task_id, Task.user_id == current_user.id)
+        select(Task).where(Task.id == task_uuid, Task.user_id == current_user.id)
     ).first()
     if not task:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Task not found")
